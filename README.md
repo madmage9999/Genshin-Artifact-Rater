@@ -2,22 +2,34 @@
 
 Discord bot that rates an artifact against an optimal 5* artifact. Put the command and image in the same message.
 
-If you would like to add it to your private server use the link: \
-https://discord.com/api/oauth2/authorize?client_id=774612459692621834&permissions=19456&scope=bot
 
-You can also use the bot by sending the command in a DM to Artifact Rater#6924.
+### Setup
+Install python locally on your machine then get an API key from https://ocr.space.
 
-If you have any issues, please contact shrubin#1866 or Chizy#0303 on discord or use the `-feedback` command.
+Then install the required packages by running the following command
+```
+python3.8 -m pip install -r requirements.txt
+```
 
-## Join the support server: https://discord.gg/SyGmBxds3M
+Store environment variables for OCR Space by creating a file called `.env` with the following inside
+```
+OCR_SPACE_API_KEY=<key>
 
+```
+If you need a different language change the language variable in line 232 to your respective language from bellow
 
+```
+en(), es(), de(), fr(), vi(), pt(), ja(), pl(), ru(), tw(), cn(), it(), idn()
+```
 
 ## Usage
+Send the image to yourself in discord and open the source file.
+Then copy the link and use it with the bot
 
 ```
--rate <image/url> [lvl=<level>] [<stat>=<weight> ...]
+python rate_artifact.py "discord image link"
 ```
+
 
 #### Default Weights
 
@@ -39,41 +51,4 @@ Set custom weights (valued between 0 and 1)
 ```
 \<stat> is any of HP, HP%, ATK, ATK%, ER (Recharge), EM, PHYS, CR (Crit Rate), CD (Crit Damage), ELEM (Elemental DMG%), Heal, DEF, DEF%
 
-## Development
-If you need help or want to contribute, feel free to DM shrubin#1866 or Chizy#0303 and join https://discord.gg/SyGmBxds3M
 
-### Setup
-```
-python3.8 -m pip install -r requirements.txt
-```
-
-Set up a bot on the Discord Developer Portal \
-Go to https://ocr.space and get an API key
-
-Store environment variables for OCR Space and Discord in `.env`
-```
-DISCORD_TOKEN=<token>
-OCR_SPACE_API_KEY=<key>
-
-```
-
-## Cogs
-To load cogs, make sure to create a config.toml and put the cogs in a list.
-```
-cogs = ["<cog name>"]
-```
-
-Optional: \
-Set a Discord `CHANNEL_ID=<id>` to receive messages when the bot goes up/down \
-Set `DEVELOPMENT=True` to divert all messages to `CHANNEL_ID`
-
-### Run the bot
-```
-python3.8 bot.py
-```
-
-### Run one-off
-Edit `url` in `rate_artifact.py`
-```
-python3.8 rate_artifact.py
-```
