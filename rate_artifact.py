@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import numpy as np
+import json
 
 from cv2 import cv2
 from dotenv import load_dotenv
@@ -47,7 +48,8 @@ async def ocr(url, num, lang=tr.en()):
 				async with session.post(ocr_url, data=data) as r:
 					json = await r.json()
 			else:
-				ocr_url = f'https://apipro{num}.ocr.space/parse/imageurl?apikey={OCR_API_KEY}&url={url}'
+				
+				ocr_url = f'https://api.ocr.space/parse/imageurl?apikey=K87021503388957&url={url}'
 				if lang.supported:
 					ocr_url += '&OCREngine=2'
 				else:
@@ -73,9 +75,10 @@ def parse(text, lang=tr.en()):
 	choices = {unidecode(choice).lower(): choice for choice in choices}
 
 	for line in text.splitlines():
+
 		if not line:
 			continue
-
+		
 		if del_prev:
 			prev = None
 		del_prev = True
@@ -141,7 +144,7 @@ def parse(text, lang=tr.en()):
 			del_prev = False
 
 	print(level, results)
-	return level, results
+	return (level, results)
 
 def validate(value, max_stat, percent):
 	while value > max_stat * 1.05:
@@ -223,10 +226,11 @@ def rate(level, results, options={}, lang=tr.en()):
 if __name__ == '__main__':
 	if sys.version_info[0] == 3 and sys.version_info[1] >= 8 and sys.platform.startswith('win'):
 		asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-	url = 'https://cdn.discordapp.com/attachments/787747793228922910/794556364059705374/image0.png'
-	lang = tr.vi()
+
+	url = sys.argv[1]
+	print(url)
+	lang = tr.en()
 	suc, text = asyncio.run(ocr(url, 2, lang))
-	print(text)
 	if suc:
 		level, results = parse(text, lang)
 		if level == None:
